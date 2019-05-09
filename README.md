@@ -1,0 +1,1 @@
+This is an express app with connections using mongoose and connecting to a remote server called mongodb atlas
