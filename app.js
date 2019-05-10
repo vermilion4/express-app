@@ -4,6 +4,7 @@ var bodyParser = require('body-parser')
 var mongoose = require('mongoose')
 var SignUp = require('./model/signup')
 var Login = require('./model/login')
+var Task = require('./model/task')
 // require("./config/db")
 var app = express()
 
@@ -49,6 +50,7 @@ app.post('/signup', function(req, res){
 	dataTosave.save((err, data) => {
 		if(err){ res.send(err)}
 			else{
+				//save login to database
 				var saveLoginData = new Login({password: req.body.password, username : req.body.username})
 
 				saveLoginData.save((err, data) =>{
@@ -93,36 +95,61 @@ app.post('/task', function(req, res){
 	var taskData = req.body
 
 	//save task to the database
+	var taskToSave = new Task(req.body)
 
-	//server response
-	res.json(taskData)
+	taskToSave.save((err, data)=>{
+		if(err){
+			res.send('task input error',err)
+		}
+		else{
+			res.send(data)
+		}
+	})
+
 })
 
-//route to update the task if it is completed. put<=>update
-app.put('/update:task', function(req, res){
-	//get the data from the request
+//route to update the task if it is completed. put<=>up
+	//get the data from the requestdate
+app.patch('/update/:taskId', function(req, res){
 
-	var updateData = req.body.isCompleted
+	var update = req.body
 
 	//update your database
+	
+		Task.findByIdAndUpdate({_id:req.params.taskId}, update, function(err, data){
+			if(err){
+				res.send(err)
+			}
+			
+				res.send(data)
+			
+		})
+		
+	
 
 	//send your response
-	res.send('Task is completed')
+
 })
 
 //handling the delete task route
-app.delete('/delete:taskId', (req, res)=>{
+app.delete('/delete/:taskId', (req, res)=>{
 
 	//get the task id
-	var taskId = req.params.taskId //req.params is made available by the body parser module.
+	var taskId = {_id:req.params.taskId}//req.params is made available by the body parser module.
 
 	//search for task in the database using its id, and delete if found
+	Task.findByIdAndDelete(taskId, function(err, data){
 
+	if(err){
+		res.send(err)
+	}
 
 	//send response to client
+	console.log(data)
 	res.send('Task successfully deleted')
 })
 
+})
 //handling logout route
 app.get('/logout', (req, res)=>{
 	res.send('Log out successful.')
