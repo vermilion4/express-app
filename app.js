@@ -8,7 +8,7 @@ var Task = require('./model/task')
 // require("./config/db")
 var app = express()
 
-var port = 3000 || process.env.port
+var port = process.env.port || 3000 
 
 
 //create db connection
