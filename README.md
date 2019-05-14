@@ -1,5 +1,8 @@
 This is an express app for a todo list with connections using mongoose and connecting to a remote server called mongodb atlas
 
+### Link to App / Deployment
+[TO DO APP](https://to-do-express-app.herokuapp.com/)
+
 ### Available Endpoints
 * "/" : Method **GET**. This is the *endpoint* for the homepage.
 	* **RESPONSE** : HOMEPAGE
