@@ -52,13 +52,13 @@ app.post('/signup', function(req, res){
 	var dataTosave = new SignUp(req.body)
 	// dataTosave = req.body
 	dataTosave.save((err, data) => {
-		if(err){ res.send(err)}
+		if(err){ res.json(err)}
 			else{
 				//save login to database
 				var saveLoginData = new Login({password: req.body.password, username : req.body.username})
 
 				saveLoginData.save((err, data) =>{
-					if(err){ res.send(err)}
+					if(err){ res.json(err)}
 						else{ res.json(data) }
 				})
 			 }
@@ -78,14 +78,14 @@ app.post('/login', function(req, res){
 	// check if your login credentials is correct in your database
 	 Login.find({ username: req.body.username, password: req.body.password}, function (err, data) {
 		if (err){
-			res.send('login error')
+			res.json('login error')
 		}
 		else{
 			console.log(data)
 			if(data[0]){
-				res.send('Login successful')
+				res.json(data[0])
 				}
-				else{ res.send("user does not exist")}
+				else{ res.json("user does not exist")}
 			
 		}
 	});
