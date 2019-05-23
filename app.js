@@ -91,6 +91,7 @@ app.post('/login', function(req, res){
 					res.json({
 							text: "user does not exist"
 				})
+					console.log(text)
 			}
 			
 		}
