@@ -51,13 +51,13 @@ app.post('/signup', function(req, res){
 	//then save the data inside my database
 	var dataTosave = new SignUp(req.body)
 	// dataTosave = req.body
-	dataTosave.save((err, dataSignUp) => {
+	dataTosave.save(function(err, dataSignUp){
 		if(err){ res.json({err})}
 			else{
 				//save login to database
 				var saveLoginData = new Login({password: req.body.password, username : req.body.username})
 
-				saveLoginData.save((err, data) =>{
+				saveLoginData.save(function(err, data){
 					if(err){ res.json({err})}
 						else{ res.json(dataSignUp) }
 				})
@@ -159,4 +159,4 @@ app.get('/logout', (req, res)=>{
 	res.json({text: "Log out successful."})
 })
 
-app.listen(port,  "0.0.0.0", ()=> {console.log(`server started at port ${port}`)})
+app.listen(port,  "0.0.0.0", function() {console.log(`server started at port ${port}`)})
