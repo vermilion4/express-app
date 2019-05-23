@@ -83,9 +83,9 @@ app.post('/login', function(req, res){
 		else{
 			console.log(data)
 			if(data[0]){
-				res.json({'Login successful'})
+				res.send('Login successful')
 				}
-				else{ res.json({"user does not exist"})}
+				else{ res.send("user does not exist")}
 			
 		}
 	});
