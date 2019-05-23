@@ -53,7 +53,7 @@ app.post('/signup', function(req, res){
 	//then save the data inside my database
 	var dataTosave = new SignUp(req.body)
 	// dataTosave = req.body
-	dataTosave.save(function(err, data){
+	dataTosave.save(function(err, signUpdata){
 		if(err){ res.json({err})}
 			else{
 				//save login to database
@@ -61,7 +61,7 @@ app.post('/signup', function(req, res){
 
 				saveLoginData.save(function(err, data){
 					if(err){ res.json({err})}
-						else{ res.json(data) }
+						else{ res.json(signUpdata) }
 				})
 			 }
 	})
