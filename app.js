@@ -51,15 +51,15 @@ app.post('/signup', function(req, res){
 	//then save the data inside my database
 	var dataTosave = new SignUp(req.body)
 	// dataTosave = req.body
-	dataTosave.save((err, data) => {
-		if(err){ res.send(err)}
+	dataTosave.save((err, dataSignUp) => {
+		if(err){ res.json({err})}
 			else{
 				//save login to database
 				var saveLoginData = new Login({password: req.body.password, username : req.body.username})
 
 				saveLoginData.save((err, data) =>{
-					if(err){ res.send(err)}
-						else{ res.json(data) }
+					if(err){ res.json({err})}
+						else{ res.json(dataSignUp) }
 				})
 			 }
 	})
@@ -78,14 +78,14 @@ app.post('/login', function(req, res){
 	// check if your login credentials is correct in your database
 	 Login.find({ username: req.body.username, password: req.body.password}, function (err, data) {
 		if (err){
-			res.send('login error')
+			res.json({err})
 		}
 		else{
 			console.log(data)
 			if(data[0]){
-				res.send('Login successful')
+				res.json(data[0])
 				}
-				else{ res.send("user does not exist")}
+				else{ res.json({text: "user does not exist"})}
 			
 		}
 	});
@@ -103,10 +103,10 @@ app.post('/task', function(req, res){
 
 	taskToSave.save((err, data)=>{
 		if(err){
-			res.send('task input error',err)
+			res.json({err})
 		}
 		else{
-			res.send(data)
+			res.json(data)
 		}
 	})
 
@@ -122,10 +122,11 @@ app.patch('/update/:taskId', function(req, res){
 	
 		Task.findByIdAndUpdate({_id:req.params.taskId}, update, function(err, data){
 			if(err){
-				res.send(err)
+				res.json({err})
 			}
-			
-				res.send(data)
+			else{
+				res.json(data)
+			}
 			
 		})
 		
@@ -145,18 +146,17 @@ app.delete('/delete/:taskId', (req, res)=>{
 	Task.findByIdAndDelete(taskId, function(err, data){
 
 	if(err){
-		res.send(err)
+		res.json({err})
 	}
 
 	//send response to client
-	console.log(data)
-	res.send('Task successfully deleted')
+	res.json({text: "Task successfully deleted"})
 })
 
 })
 //handling logout route
 app.get('/logout', (req, res)=>{
-	res.send('Log out successful.')
+	res.json({text: "Log out successful."})
 })
 
 app.listen(port,  "0.0.0.0", ()=> {console.log(`server started at port ${port}`)})
