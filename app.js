@@ -26,17 +26,19 @@ err => {
 	console.log('Database connection error due to: ', err) 
 }
 );
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
+ 
+// parse application/json
+app.use(bodyParser.json())
+
 // allow cross origin request
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
- 
-// parse application/json
-app.use(bodyParser.json())
 
 app.get('/', function(req, res){
 
@@ -55,7 +57,7 @@ app.post('/signup', function(req, res){
 		if(err){ res.json({err})}
 			else{
 				//save login to database
-				var saveLoginData = new Login({password: req.body.password, username : req.body.username})
+				var saveLoginData = new Login({username : req.body.username, password: req.body.password})
 
 				saveLoginData.save(function(err, data){
 					if(err){ res.json({err})}
@@ -85,7 +87,11 @@ app.post('/login', function(req, res){
 			if(data[0]){
 				res.json(data[0])
 				}
-				else{ res.json({text: "user does not exist"})}
+				else{ 
+					res.json({
+							text: "user does not exist"
+				})
+			}
 			
 		}
 	});
