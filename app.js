@@ -51,15 +51,15 @@ app.post('/signup', function(req, res){
 	//then save the data inside my database
 	var dataTosave = new SignUp(req.body)
 	// dataTosave = req.body
-	dataTosave.save((err, data) => {
-		if(err){ res.json(err)}
+	dataTosave.save((err, dataSignUp) => {
+		if(err){ res.send(err)}
 			else{
 				//save login to database
 				var saveLoginData = new Login({password: req.body.password, username : req.body.username})
 
 				saveLoginData.save((err, data) =>{
-					if(err){ res.json(err)}
-						else{ res.json(data) }
+					if(err){ res.send(err)}
+						else{ res.json(dataSignUp) }
 				})
 			 }
 	})
