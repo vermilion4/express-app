@@ -118,6 +118,18 @@ app.post('/task', function(req, res){
 	})
 
 })
+//handle get method to get all tasks from database
+app.get('/viewTask', function(req, res){
+
+	Task.find({}, function(err,data){
+		if(err){
+			res.json({err})
+		}
+		else{
+			res.json(data)
+		}
+	})
+})
 
 //route to update the task if it is completed. put<=>up
 	//get the data from the requestdate
